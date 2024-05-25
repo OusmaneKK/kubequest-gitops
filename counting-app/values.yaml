@@ -1,0 +1,153 @@
+replicaCount: 1
+
+namespace: counting-app
+image:
+  repository: ousmanekk/kubequest
+  pullPolicy: IfNotPresent
+  tag: 0.2.0
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: "my-sa"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 80
+  selector:
+    app: sample-app
+
+ingress:
+  name: counting-app-ingress
+  enabled: true
+  hosts: t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com
+  ingressClassName: traefik  # Assurez-vous que cela correspond à votre classe d'ingress
+  useDefaultIngressClass: false
+  useDefaultAnnotations: true
+  pathType: ImplementationSpecific
+  path: /
+  issuer:
+    name: letsencrypt-prod
+    scope: cluster 
+  tls:
+    secretName: kubernetes-dashboard-tls 
+  labels: {}
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "500m"
+    memory: "500Mi"
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+app:
+  name: myphpapp
+  image:
+    repository: ousmanekk/kubequest
+    tag: 0.2.0
+    
+mysql:
+  service:
+  configuration: |-
+    socket=/opt/bitnami/mysql/tmp/mysql.sock
+  auth:
+    database: my_database
+    password: user_password
+    username: user
+    rootPassword: root_password
+  persistence:
+    enabled: true
+  podSecurityContext:
+    enabled: false
+    fsGroup: 1001
+  containerSecurityContext:
+    enabled: false
+    runAsUser: 1001
+
+nginx:
+  type: ClusterIP
+  name: counting-app-service
+  http:
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  https:
+    port: 443
+    targetPort: 443
+    nodePort: 30443
+
+labels:
+  configmap:
+    name: php-app
+    instance: php-app-abcxyz
+    version: "0.2.0"
+    managed: Helm
+    component: configmap
+    part: php-app
+  deployment:
+    name: php-app
+    instance: php-app-abcxyz
+    version: "0.2.0"
+    managed: Helm
+    component: server
+    part: php-app
+  service:
+    name: php-app
+    instance: nginx-ingress-abcxyz
+    version: "4.10.0"
+    managed: Helm
+    component: ingress
+    part: php-app

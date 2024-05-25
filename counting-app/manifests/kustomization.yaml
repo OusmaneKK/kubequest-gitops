@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- cluster-role-binding.yaml
+- dashboard-ingress.yaml
+- dashboard-deployment.yaml
+- dashboard-metrics.yaml
+- dashboard-secrets.yaml
+- dashboard-service.yaml
+- grafana.yaml
+- loki.yaml
+- namespaces.yaml
+- prometheus.yaml
+
+

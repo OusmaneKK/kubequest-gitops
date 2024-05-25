@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.labels.configmap.name }}
+    app.kubernetes.io/version: {{ .Values.labels.configmap.version }}
+    app.kubernetes.io/instance: {{ .Values.labels.configmap.instance }}
+    app.kubernetes.io/managed-by: {{ .Values.labels.configmap.managed }}
+    app.kubernetes.io/component: {{ .Values.labels.configmap.component }}
+    app.kubernetes.io/part-of: {{ .Values.labels.configmap.part }}
+data:
+  APP_DEBUG: "true"
+  APP_ENV: "dev"
+  APP_KEY: "base64:DJYTvaRkEZ/YcQsX3TMpB0iCjgme2rhlIOus9A1hnj4="
+  DB_CONNECTION: "mysql"
+  DB_HOST: "{{ .Release.Name }}-mysql"
+  DB_PORT: "3306"
+  DB_DATABASE: "my_database"
+  DB_USERNAME: "user"
+  DB_PASSWORD: "user_password"

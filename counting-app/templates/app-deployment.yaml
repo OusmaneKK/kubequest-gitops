@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    traefik.enable: "true"
+    traefik.http.routers.sample-app.rule: "Host(`t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com`)"
+    traefik.http.services.sample-app.loadbalancer.server.port: "80"
+  labels:
+    app.kubernetes.io/name: {{ .Values.labels.deployment.name }}
+    app.kubernetes.io/version: {{ .Values.labels.deployment.version }}
+    app.kubernetes.io/instance: {{ .Values.labels.deployment.instance }}
+    app.kubernetes.io/managed-by: {{ .Values.labels.deployment.managed }}
+    app.kubernetes.io/component: {{ .Values.labels.deployment.component }}
+    app.kubernetes.io/part-of: {{ .Values.labels.deployment.part }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: {{ .Values.app.name }}
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+          - configMapRef:
+              name: app-config
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
