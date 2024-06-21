@@ -5,7 +5,10 @@ metadata:
   namespace: counting-app
   annotations:
     kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
+  tls:
+    - secretName: argocd-secret
   rules:
     - host: {{ .Values.ingress.hosts }}
       http:

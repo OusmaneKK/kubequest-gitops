@@ -15,11 +15,9 @@ spec:
     - name: http
       port: {{ .Values.nginx.http.port }}
       targetPort: {{ .Values.nginx.http.targetPort }}
-      nodePort: {{ .Values.nginx.http.nodePort }}
     - name: https
       port: {{ .Values.nginx.https.port }}
       targetPort: {{ .Values.nginx.https.targetPort }}
-      nodePort: {{ .Values.nginx.https.nodePort }}
   selector:
     app: {{ .Values.app.name }}
 

@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     traefik.enable: "true"
-    traefik.http.routers.sample-app.rule: "Host(`t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com`)"
+    traefik.http.routers.sample-app.rule: "Host(`t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com`) && PathPrefix(`/counting-app`)"
     traefik.http.services.sample-app.loadbalancer.server.port: "80"
   labels:
     app.kubernetes.io/name: {{ .Values.labels.deployment.name }}
