@@ -19,6 +19,13 @@ spec:
         ports:
         - name: http
           containerPort: 3100
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
@@ -32,4 +39,28 @@ spec:
     - protocol: TCP
       port: 3100
       targetPort: 3100
-  type: LoadBalancer
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loki
+  namespace: logging
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: default-headers
+    traefik.ingress.kubernetes.io/router.service: loki
+    traefik.ingress.kubernetes.io/router.rule: Host(`t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com`) && PathPrefix(`/loki`)
+spec:
+  rules:
+  - host: t-clo-902-lil-1-vm1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /loki
+        pathType: Prefix
+        backend:
+          service:
+            name: loki
+            port:
+              number: 3100
