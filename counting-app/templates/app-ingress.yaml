@@ -20,7 +20,6 @@ spec:
   ingressClassName: nginx
   tls:
     - secretName: default-tls
-      namespace: default 
       hosts:
         - {{ .Values.ingress.hosts }}
   rules:
