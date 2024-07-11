@@ -121,13 +121,13 @@ testFramework:
     tag: "v1.4.1"
   imagePullPolicy: IfNotPresent
   securityContext: {}
-  resources: {}
-  #  limits:
-  #    cpu: 100m
-  #    memory: 128Mi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 128Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 # dns configuration for pod
 dnsPolicy: ~
@@ -306,13 +306,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-#  limits:
-#    cpu: 100m
-#    memory: 128Mi
-#  requests:
-#    cpu: 100m
-#    memory: 128Mi
+resources: 
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 ## Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -417,13 +417,13 @@ initChownData:
   ## initChownData resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
-  #  limits:
-  #    cpu: 100m
-  #    memory: 128Mi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 128Mi
+  resources: 
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
   securityContext:
     runAsNonRoot: false
     runAsUser: 0
@@ -858,13 +858,13 @@ sidecar:
     tag: 1.26.1
     sha: ""
   imagePullPolicy: IfNotPresent
-  resources: {}
-#   limits:
-#     cpu: 100m
-#     memory: 100Mi
-#   requests:
-#     cpu: 50m
-#     memory: 50Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
   securityContext:
     allowPrivilegeEscalation: false
     capabilities:
@@ -1221,13 +1221,13 @@ imageRenderer:
     limitEgress: false
     # Allow additional services to access image-renderer (eg. Prometheus operator when ServiceMonitor is enabled)
     extraIngressSelectors: []
-  resources: {}
-#   limits:
-#     cpu: 100m
-#     memory: 100Mi
-#   requests:
-#     cpu: 50m
-#     memory: 50Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
   ## Node labels for pod assignment
   ## ref: https://kubernetes.io/docs/user-guide/node-selection/
   #
